@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Oréal H₂ Zéro — Sar Se Shuru</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Playfair+Display:wght@400;500;700&family=Jost:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+:root{
+  --black:#080808;
+  --black2:#111111;
+  --black3:#1a1a1a;
+  --white:#ffffff;
+  --offwhite:#f0ede8;
+  --gold:#c9a84c;
+  --gold2:#e8c96a;
+  --gold-dim:#8a6f2e;
+  --gold-line:rgba(201,168,76,0.35);
+  --muted:#6b6b6b;
+  --muted2:#999;
+
+  /* product accent colours — now monochromatic gold tints on black */
+  --root:#1c1608;
+  --wave:#181410;
+  --rebuild:#141416;
+  --glow:#1a1510;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--black);
+  color:var(--offwhite);
+  font-family:'Jost',sans-serif;
+  overflow:hidden;
+  height:100vh;
+  width:100vw;
+}
+
+/* ===== gold shimmer line at top ===== */
+body::before{
+  content:'';
+  position:fixed;
+  top:0; left:0; right:0;
+  height:2px;
+  background:linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold2) 55%, var(--gold) 75%, transparent 100%);
+  z-index:200;
+  opacity:0.9;
+}
+
+section{
+  height:100vh;
+  width:100vw;
+  padding:120px 8vw;
+  position:fixed;
+  top:0; left:0;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  overflow-y:auto;
+  background:var(--black);
+}
+section.active{
+  display:flex;
+  animation:slideFadeIn .5s cubic-bezier(.4,0,.2,1);
+}
+@keyframes slideFadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.eyebrow{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.eyebrow::after{
+  content:'';
+  flex:1;
+  max-width:60px;
+  height:1px;
+  background:var(--gold-line);
+}
+h1,h2,h3{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;
+  margin:0;
+}
+h2{font-family:'Playfair Display',serif; color:var(--white);}
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity 0.85s ease, transform 0.85s ease;
+}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+/* ===== progress dots ===== */
+.dots{
+  position:fixed;
+  right:28px;
+  top:50%;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  z-index:50;
+}
+.dots a{
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  display:block;
+  transition:background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.dots a.active{
+  background:var(--gold);
+  transform:scale(1.6);
+  box-shadow:0 0 8px rgba(201,168,76,0.6);
+}
+.dots a{cursor:pointer;}
+
+/* ===== carousel nav ===== */
+.navbtn{
+  position:fixed;
+  bottom:36px;
+  z-index:60;
+  width:50px; height:50px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid rgba(201,168,76,0.3);
+  color:var(--gold);
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.navbtn:hover{
+  background:rgba(201,168,76,0.1);
+  border-color:var(--gold);
+  box-shadow:0 0 18px rgba(201,168,76,0.2);
+}
+.navbtn:active{transform:scale(0.9);}
+.navbtn:disabled{opacity:0.2; cursor:default; pointer-events:none;}
+#prevBtn{left:28px;}
+#nextBtn{right:28px;}
+.slide-counter{
+  position:fixed;
+  bottom:52px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--muted);
+  z-index:60;
+}
+@media(max-width:700px){
+  .navbtn{width:42px;height:42px;font-size:16px;bottom:20px;}
+  #prevBtn{left:14px;} #nextBtn{right:14px;}
+  .slide-counter{bottom:30px; font-size:10px;}
+  .dots{right:12px;}
+}
+
+/* ===== HERO ===== */
+#hero{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:var(--black);
+  overflow:hidden;
+  padding:0;
+}
+.hero-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  position:relative;
+  z-index:1;
+}
+
+/* ===== SCENE / WHY US ===== */
+#scene{
+  background:var(--black2);
+  justify-content:center;
+  padding:20px 4vw 20px;
+  align-items:center;
+  overflow:hidden;
+}
+.whyus-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  gap:28px;
+  margin-bottom:14px;
+  flex-shrink:0;
+}
+.whyus-header-left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.whyus-header-right{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+}
+.whyus-meme-gif{
+  width:300px;
+  height:200px;
+  object-fit:contain;
+  border-radius:10px;
+  border:1px solid rgba(201,168,76,0.3);
+  display:block;
+  background:var(--black3);
+}
+.whyus-meme-caption{
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:var(--gold-dim);
+  text-transform:uppercase;
+  text-align:center;
+}
+.whyus-title{
+  font-family:'Playfair Display', serif;
+  font-size:clamp(28px,4.5vw,58px);
+  font-weight:700;
+  color:var(--white);
+  text-align:left;
+  margin-bottom:0;
+  letter-spacing:2px;
+}
+.whyus-title span{
+  color:var(--gold);
+  text-shadow:0 0 30px rgba(201,168,76,0.4);
+}
+.whyus-sub{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--gold-dim);
+  text-align:left;
+  text-transform:uppercase;
+  margin-bottom:0;
+}
+.whyus-grid{
+  display:grid;
+  grid-template-columns:1fr 1.1fr 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:10px;
+  width:100%;
+  flex:1;
+  min-height:0;
+  height:calc(100vh - 280px);
+  margin:0 auto;
+  max-height:360px;
+}
+/* hero card spans 2 rows */
+.whyus-card{
+  border-radius:10px;
+  padding:8px 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:4px;
+  border:1px solid rgba(201,168,76,0.18);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  min-height:0;
+  overflow:hidden;
+}
+.whyus-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 30px rgba(201,168,76,0.12);
+  border-color:rgba(201,168,76,0.45);
+}
+.whyus-card.light{
+  background:rgba(201,168,76,0.06);
+}
+.whyus-card.dark{
+  background:rgba(201,168,76,0.14);
+  border-color:rgba(201,168,76,0.35);
+}
+.whyus-card.hero-card{
+  background:var(--gold);
+  border-color:var(--gold2);
+  grid-column:2;
+  grid-row:1 / span 2;
+  padding:14px 12px;
+}
+.whyus-card.hero-card .wc-icon{font-size:36px;}
+.whyus-card.hero-card .wc-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(18px,2vw,24px);
+  font-weight:700;
+  color:var(--black);
+  letter-spacing:0.5px;
+  line-height:1.2;
+}
+.whyus-card.hero-card .wc-sub{
+  font-size:10px;
+  color:rgba(0,0,0,0.6);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-family:'Space Mono',monospace;
+}
+/* stat cards on the right column */
+.whyus-card.stat{
+  background:rgba(201,168,76,0.06);
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+  text-align:left;
+  gap:16px;
+  padding:10px 16px;
+}
+.wc-stat-num{
+  font-family:'Space Mono',monospace;
+  font-size:clamp(30px,3.5vw,46px);
+  font-weight:700;
+  color:var(--gold);
+  white-space:nowrap;
+  text-shadow:0 0 20px rgba(201,168,76,0.3);
+}
+.wc-stat-label{
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--offwhite);
+  text-transform:uppercase;
+  line-height:1.5;
+}
+.wc-icon{
+  font-size:26px;
+  line-height:1;
+}
+.wc-title{
+  font-family:'Jost',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--offwhite);
+}
+.whyus-card.dark .wc-title{ color:var(--white); }
+/* right column spans full height */
+.whyus-right-col{
+  grid-column:4;
+  grid-row:1 / span 2;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-height:0;
+}
+.whyus-right-col .whyus-card{
+  flex:1;
+  min-height:0;
+}
+@media(max-width:820px){
+  .whyus-grid{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:none;
+    height:auto;
+  }
+  .whyus-card.hero-card{grid-column:1 / span 2; grid-row:auto;}
+  .whyus-right-col{grid-column:1 / span 2; flex-direction:row; flex-wrap:wrap;}
+  .whyus-right-col .whyus-card{flex:1; min-width:140px;}
+}
+
+/* ===== INSIGHT / PRICING ===== */
+#insight{background:var(--black); overflow-y:auto;}
+.gap-row{
+  display:flex;
+  gap:60px;
+  align-items:flex-end;
+  justify-content:center;
+  margin:16px 0 18px;
+  flex-wrap:wrap;
+}
+.gap-stat{text-align:center;}
+.gap-num{
+  font-family:'Space Mono';
+  font-weight:700;
+  font-size:clamp(40px,6vw,76px);
+  color:var(--gold);
+  text-shadow:0 0 30px rgba(201,168,76,0.2);
+}
+.gap-label{
+  font-size:12px;
+  letter-spacing:1.5px;
+  color:var(--muted2);
+  margin-top:10px;
+  max-width:150px;
+  text-transform:uppercase;
+}
+.arrow-down{color:var(--gold-line); font-size:22px;}
+.cite{
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  max-width:620px;
+  margin:0 auto;
+  line-height:1.7;
+}
+.cite a{color:var(--gold-dim);}
+
+/* pricing cards */
+.pricing-row{
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:780px;
+  margin:0 auto;
+}
+.price-card{
+  flex:1;
+  min-width:260px;
+  max-width:340px;
+  background:var(--black2);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:14px;
+  padding:28px 28px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  position:relative;
+  transition:box-shadow 0.3s, border-color 0.3s;
+}
+.price-card:hover{
+  border-color:rgba(201,168,76,0.5);
+  box-shadow:0 8px 32px rgba(201,168,76,0.1);
+}
+.price-card--highlight{
+  border-color:var(--gold);
+  background:rgba(201,168,76,0.07);
+  box-shadow:0 0 40px rgba(201,168,76,0.1);
+}
+.price-card-tag{
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--gold-dim);
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.price-card--highlight .price-card-tag{color:var(--gold);}
+.price-card-price{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,4vw,52px);
+  font-weight:700;
+  color:var(--white);
+  line-height:1;
+  margin-bottom:2px;
+}
+.price-card--highlight .price-card-price{color:var(--gold2);}
+.price-card-sub{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  color:var(--muted2);
+  letter-spacing:1px;
+}
+.price-card-per{
+  font-family:'Jost',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  color:var(--gold);
+  letter-spacing:0.5px;
+  margin-bottom:12px;
+}
+.price-card-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  border-top:1px solid rgba(201,168,76,0.15);
+  padding-top:14px;
+}
+.price-card-list li{
+  font-size:12.5px;
+  color:var(--offwhite);
+  padding-left:16px;
+  position:relative;
+  line-height:1.4;
+}
+.price-card-list li::before{
+  content:'—';
+  position:absolute;
+  left:0;
+  color:var(--gold-dim);
+  font-size:10px;
+}
+.price-card-badge{
+  position:absolute;
+  top:-12px;
+  right:20px;
+  background:var(--gold);
+  color:var(--black);
+  font-family:'Space Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  padding:4px 12px;
+  border-radius:20px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+/* ===== ABOUT / VIDEO ===== */
+#about{
+  background:var(--black);
+  align-items:center;
+  justify-content:center;
+  padding:60px 6vw 60px;
+}
+.about-title{
+  font-size:clamp(28px,4vw,48px);
+  text-align:center;
+  margin-bottom:28px;
+}
+.about-video-wrap{
+  position:relative;
+  width:100%;
+  max-width:900px;
+  flex:1;
+  min-height:0;
+  max-height:calc(100vh - 220px);
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(201,168,76,0.25);
+  box-shadow:0 0 60px rgba(201,168,76,0.1);
+  background:var(--black2);
+}
+.about-video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.about-video-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.35);
+  transition:opacity 0.3s;
+}
+.about-play-btn{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:rgba(201,168,76,0.15);
+  border:2px solid var(--gold);
+  color:var(--gold);
+  font-size:26px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background 0.25s, transform 0.2s, box-shadow 0.25s;
+  padding-left:4px;
+}
+.about-play-btn:hover{
+  background:rgba(201,168,76,0.28);
+  transform:scale(1.08);
+  box-shadow:0 0 28px rgba(201,168,76,0.35);
+}
+
+/* ===== QUIZ / RANGE ===== */
+#range{
+  background:var(--black2);
+  padding:80px 6vw 80px;
+  justify-content:flex-start;
+}
+.range-header{margin-bottom:28px;}
+.range-header .eyebrow{margin-bottom:10px;}
+.range-header h2{font-size:clamp(22px,3.2vw,36px);}
+
+/* Two-column quiz layout */
+.quiz-layout{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:0;
+  flex:1;
+  min-height:0;
+  max-height:calc(100vh - 220px);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(201,168,76,0.06);
+}
+
+/* ---- LEFT: quiz panel ---- */
+.quiz-left {
+  background: rgba(255, 255, 255, 0.015);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(201, 168, 76, 0.12);
+  overflow: hidden;
+}
+.quiz-progress{
+  display:flex;
+  gap:6px;
+  margin-bottom:22px;
+  flex-shrink:0;
+}
+.qp-dot{
+  flex:1;
+  height:2px;
+  border-radius:1px;
+  background:rgba(255,255,255,0.1);
+  transition:background 0.4s;
+}
+.qp-dot.done{background:var(--gold);}
+.qp-dot.active{
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  box-shadow:0 0 8px rgba(201,168,76,0.4);
+}
+.quiz-level{
+  display:none;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity 0.4s ease, transform 0.4s ease;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+}
+.quiz-level.active{display:flex; flex-direction:column; opacity:1; transform:translateY(0); min-height:0;}
+.quiz-level.enter{animation:qEnter 0.4s ease forwards;}
+@keyframes qEnter{
+  from{opacity:0; transform:translateY(12px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.quiz-step-label{
+  font-family:'Space Mono';
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--gold-dim);
+  text-transform:uppercase;
+  margin-bottom:10px;
+  flex-shrink:0;
+}
+.quiz-q{
+  font-family:'Cormorant Garamond';
+  font-size:clamp(18px,2vw,24px);
+  margin-bottom:20px;
+  color:var(--white);
+  line-height:1.35;
+  flex-shrink:0;
+}
+
+/* option grid — 2×2, fixed size, never changes */
+.quiz-opts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:170px 170px;
+  gap:10px;
+  flex-shrink:0;
+  overflow:hidden;
+}
+.quiz-opts button{
+  font-family:'Jost';
+  font-size:12.5px;
+  padding:0;
+  background:var(--black3);
+  border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.75);
+  border-radius:8px;
+  cursor:pointer;
+  transition:background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-align:center;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:170px;
+}
+.quiz-opts button:hover{
+  background:rgba(201,168,76,0.07);
+  border-color:rgba(201,168,76,0.45);
+  color:var(--white);
+  box-shadow:0 0 16px rgba(201,168,76,0.08);
+}
+.quiz-opts button:active{transform:scale(0.97);}
+.quiz-opts button.selected{
+  background:rgba(201,168,76,0.12);
+  border-color:var(--gold);
+  color:var(--white);
+  box-shadow:0 0 20px rgba(201,168,76,0.15);
+}
+/* image area — fixed height, fills above the label */
+.opt-img {
+  width: 100%;
+  height: 132px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--black3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.opt-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+/* fixed label strip */
+.opt-label {
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: inherit;
+  text-align: center;
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(201,168,76,0.12);
+}
+.quiz-level-meme{
+  display:none;
+}
+
+/* ---- result inside left panel ---- */
+.quiz-result{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px 10px;
+  text-align:center;
+  flex:1;
+}
+.quiz-result.show{display:flex; animation:qEnter 0.5s ease forwards;}
+.result-badge{
+  display:inline-block;
+  padding:12px 32px;
+  border-radius:4px;
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:3px;
+  margin-bottom:20px;
+  border:1px solid var(--gold);
+  background:rgba(201,168,76,0.12);
+  color:var(--gold2);
+  text-transform:uppercase;
+}
+.quiz-restart{
+  margin-top:20px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--muted2);
+  font-family:'Space Mono';
+  font-size:10px;
+  letter-spacing:2px;
+  padding:10px 28px;
+  border-radius:2px;
+  cursor:pointer;
+  transition:border-color 0.2s, color 0.2s;
+  text-transform:uppercase;
+}
+.quiz-restart:hover{border-color:var(--gold); color:var(--gold);}
+
+/* ---- RIGHT: visual panel ---- */
+.quiz-right{
+  background:var(--black);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+
+/* 2x2 product image grid — fills the entire right panel */
+.quiz-right-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  flex:1;
+  gap:2px;
+  background:rgba(201,168,76,0.1);
+  min-height:0;
+}
+.qr-cell{
+  position:relative;
+  overflow:hidden;
+  background:var(--black2);
+  transition:opacity 0.4s, filter 0.4s;
+  opacity:0.55;
+  filter:grayscale(30%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.qr-cell.hi{
+  opacity:1;
+  filter:none;
+}
+.qr-cell img{
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center 20%;
+  display: block;
+  padding: 8px 8px 32px;
+}
+/* product name label overlay */
+.qr-cell-label{
+  position:absolute;
+  bottom:0; left:0; right:0;
+  padding:10px 12px 10px;
+  background:linear-gradient(transparent, rgba(0,0,0,0.75));
+  font-family:'Space Mono';
+  font-size:9px;
+  letter-spacing:2px;
+  color:rgba(201,168,76,0.85);
+  text-transform:uppercase;
+}
+.qr-cell.hi .qr-cell-label{
+  color:var(--gold2);
+}
+/* gold border highlight on active cell */
+.qr-cell::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border:2px solid transparent;
+  transition:border-color 0.35s;
+  pointer-events:none;
+}
+.qr-cell.hi::after{
+  border-color:var(--gold);
+}
+
+/* responsive: stack on small screens */
+@media(max-width:900px){
+  .quiz-layout{grid-template-columns:1fr; max-height:none;}
+  .quiz-right{display:none;}
+  .quiz-opts{grid-template-columns:1fr 1fr;}
+}
+
+/* ===== PRODUCTS ===== */
+#products{
+  background:var(--black);
+  padding:60px 4vw 50px;
+  align-items:center;
+  justify-content:center;
+}
+.products-title{
+  font-size:clamp(24px,3.5vw,42px);
+  text-align:center;
+  margin-bottom:28px;
+  margin-top:-20px;
+  max-width:700px;
+}
+.products-img-wrap{
+  flex:1;
+  min-height:0;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  max-height:calc(100vh - 210px);
+}
+.products-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  border-radius:12px;
+  display:block;
+}
+
+/* ===== 4Ps ===== */
+#fourps{background:var(--black);}
+.ps-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:rgba(201,168,76,0.15);
+  margin-top:46px;
+  border-radius:8px;
+  overflow:hidden;
+}
+.ps-card{
+  background:var(--black2);
+  padding:28px 22px;
+  border-top:2px solid transparent;
+  transition:border-color 0.3s;
+}
+.ps-card:hover{border-top-color:var(--gold);}
+.ps-num{
+  font-family:'Space Mono';
+  color:var(--gold);
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+.ps-card h3{font-size:20px; margin:10px 0 12px; color:var(--white);}
+.ps-card p{font-size:13px; line-height:1.65; color:rgba(255,255,255,0.55); margin:0;}
+
+/* ===== TIMELINE ===== */
+#launch{background:var(--black2);}
+.timeline{
+  display:flex;
+  justify-content:space-between;
+  margin-top:0;
+  margin-bottom:0;
+  position:relative;
+  width:100%;
+}
+.timeline::before{
+  content:'';
+  position:absolute;
+  top:9px; left:0; right:0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(201,168,76,0.3), rgba(201,168,76,0.3), transparent);
+}
+.tpoint{position:relative; text-align:center; width:25%;}
+.tdot{
+  width:18px; height:18px; border-radius:50%;
+  background:var(--black); border:2px solid rgba(201,168,76,0.35);
+  margin:0 auto 14px;
+  transition:background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.tpoint.hit .tdot{
+  background:var(--gold);
+  border-color:var(--gold);
+  box-shadow:0 0 12px rgba(201,168,76,0.5);
+}
+.tpoint h4{font-family:'Space Mono'; font-size:11px; letter-spacing:2px; color:var(--gold); margin:0 0 8px;}
+.tpoint p{font-size:12px; color:rgba(255,255,255,0.5); max-width:150px; margin:0 auto; line-height:1.6;}
+
+/* launch page wrapper — aligns timeline dots above channel boxes */
+.launch-wrapper{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  width:100%;
+  margin-top:48px;
+}
+.launch-timeline-row{
+  width:100%;
+  /* pad so first/last dot centres align with first/last box centres */
+  padding:0 calc(12.5% + 18px);
+  box-sizing:border-box;
+}
+.launch-channels-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+
+/* channel sequence on launch page */
+.channel-seq{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:0;
+  margin-top:0;
+  width:100%;
+}
+.ch-step{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  background:var(--black3);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:12px;
+  padding:24px 0;
+  flex:1;
+  transition:border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.ch-step:hover{
+  border-color:var(--gold);
+  box-shadow:0 0 24px rgba(201,168,76,0.15);
+  transform:translateY(-3px);
+}
+.ch-icon{
+  font-size:32px;
+  line-height:1;
+}
+.ch-label{
+  font-family:'Space Mono',monospace;
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--offwhite);
+  text-transform:uppercase;
+  text-align:center;
+}
+.ch-arrow{
+  color:var(--gold);
+  font-size:22px;
+  padding:0 14px;
+  opacity:0.6;
+}
+
+/* ===== FUNNEL / SALES STRATEGY ===== */
+#sales{background:var(--black);}
+.strategy-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:48px;
+  width:100%;
+}
+.strat-card{
+  background:var(--black2);
+  border:1px solid rgba(201,168,76,0.18);
+  border-top:3px solid var(--gold-line);
+  border-radius:12px;
+  padding:28px 22px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  transition:border-top-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.strat-card:hover{
+  border-top-color:var(--gold);
+  box-shadow:0 8px 30px rgba(201,168,76,0.1);
+  transform:translateY(-3px);
+}
+.strat-num{
+  font-family:'Space Mono',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--gold-dim);
+}
+.strat-icon{
+  font-size:32px;
+  line-height:1;
+  margin:4px 0;
+}
+.strat-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(17px,1.8vw,22px);
+  font-weight:600;
+  color:var(--white);
+  line-height:1.2;
+}
+.strat-desc{
+  font-size:13px;
+  color:var(--offwhite);
+  line-height:1.55;
+  opacity:0.75;
+}
+@media(max-width:820px){
+  .strategy-grid{grid-template-columns:1fr 1fr;}
+  .channel-seq{gap:8px;}
+  .ch-arrow{padding:0 4px; font-size:16px;}
+}
+.funnel{max-width:540px; margin:46px auto 0;}
+.fstep{
+  display:flex; align-items:center; gap:16px;
+  padding:15px 20px;
+  margin:0 auto 8px;
+  border:1px solid rgba(255,255,255,0.07);
+  border-left:2px solid var(--gold-line);
+  border-radius:0 6px 6px 0;
+  background:rgba(255,255,255,0.02);
+  transition:background 0.2s, border-left-color 0.2s;
+}
+.fstep:hover{background:rgba(201,168,76,0.04); border-left-color:var(--gold);}
+.fstep .fw{
+  font-family:'Space Mono';
+  font-size:11px;
+  letter-spacing:1px;
+  color:var(--gold);
+  min-width:58px;
+  text-transform:uppercase;
+}
+.fstep p{margin:0; font-size:13.5px; color:rgba(255,255,255,0.7); line-height:1.5;}
+.channels{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:36px;
+}
+.chan{
+  padding:16px 14px;
+  border-radius:6px;
+  background:var(--black2);
+  border:1px solid rgba(201,168,76,0.12);
+  border-top:2px solid rgba(201,168,76,0.2);
+  text-align:center;
+  transition:border-top-color 0.2s, box-shadow 0.2s;
+}
+.chan:hover{border-top-color:var(--gold); box-shadow:0 0 16px rgba(201,168,76,0.08);}
+.chan h4{font-size:13px; margin:0 0 6px; color:var(--gold); letter-spacing:0.5px;}
+.chan p{font-size:11px; margin:0; color:var(--muted2); line-height:1.5;}
+
+/* ===== BUSINESS ===== */
+#business{background:var(--black2); text-align:center;}
+.biz-row{
+  display:flex; justify-content:center; gap:70px;
+  margin:48px 0; flex-wrap:wrap;
+}
+.biz-num{
+  font-family:'Space Mono';
+  font-weight:700;
+  font-size:clamp(36px,5vw,60px);
+  color:var(--gold);
+  text-shadow:0 0 24px rgba(201,168,76,0.3);
+}
+.biz-label{
+  font-size:11px;
+  color:var(--muted2);
+  margin-top:8px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.math{
+  max-width:460px; margin:36px auto 0;
+  font-family:'Space Mono'; font-size:12px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(201,168,76,0.15);
+  border-left:2px solid var(--gold);
+  border-radius:0 6px 6px 0;
+  padding:22px 26px;
+  text-align:left;
+  line-height:2.2;
+  color:rgba(255,255,255,0.6);
+}
+.math .tot{
+  color:var(--gold);
+  border-top:1px solid rgba(201,168,76,0.2);
+  padding-top:12px;
+  margin-top:8px;
+  font-weight:700;
+}
+
+/* ===== CLOSE ===== */
+#close{
+  align-items:center;
+  text-align:center;
+  background:var(--black);
+}
+/* gold gradient accent behind text */
+#close::before{
+  content:'';
+  position:absolute;
+  width:500px; height:500px;
+  border-radius:50%;
+  background:radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+#close h2{
+  font-size:clamp(26px,4.5vw,44px);
+  max-width:780px;
+  margin:0 auto 28px;
+  line-height:1.4;
+  color:var(--white);
+  position:relative;
+}
+.hashtag{
+  font-family:'Space Mono';
+  color:var(--gold);
+  letter-spacing:3px;
+  font-size:13px;
+  position:relative;
+}
+.refs{
+  margin-top:60px;
+  max-width:620px;
+  font-size:11px;
+  color:var(--muted);
+  text-align:left;
+  line-height:2;
+  border-top:1px solid rgba(201,168,76,0.15);
+  padding-top:22px;
+  position:relative;
+}
+.refs b{color:rgba(255,255,255,0.7);}
+
+@media(max-width:820px){
+  .ps-grid,.channels{grid-template-columns:1fr 1fr;}
+  .gap-row{gap:30px;}
+  .quiz-opts{grid-template-columns:1fr;}
+  .timeline{flex-direction:column; gap:26px;}
+  .timeline::before{display:none;}
+  .biz-row{gap:40px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="dots">
+  <a href="#hero" class="active"></a>
+  <a href="#scene"></a>
+  <a href="#about"></a>
+  <a href="#range"></a>
+  <a href="#products"></a>
+  <a href="#insight"></a>
+  <a href="#launch"></a>
+  <a href="#sales"></a>
+  <a href="#business"></a>
+  <a href="#close"></a>
+</nav>
+
+<button id="prevBtn" class="navbtn" aria-label="Previous">&larr;</button>
+<button id="nextBtn" class="navbtn" aria-label="Next">&rarr;</button>
+<div class="slide-counter" id="slideCounter">01 / 10</div>
+
+<section id="hero">
+  <canvas id="heroCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:0.55;"></canvas>
+  <img src="images/starting page.png" alt="H₂ Zéro — Starting Page" class="hero-img">
+</section>
+
+<section id="scene">
+  <div class="whyus-header">
+    <div class="whyus-header-left">
+      <div class="whyus-title reveal">WHY <span>US?</span></div>
+      <div class="whyus-sub reveal">What makes H&#8322; Zéro different</div>
+    </div>
+    <div class="whyus-header-right reveal">
+      <img src="images/ye_kya_he.gif" alt="Ye kya he" class="whyus-meme-gif">
+      <div class="whyus-meme-caption">your shampoo, probably 💀</div>
+    </div>
+  </div>
+
+  <div class="whyus-grid">
+
+    <!-- Row 1, Col 1: Vegan Formula -->
+    <div class="whyus-card light reveal">
+      <div class="wc-icon">🌿</div>
+      <div class="wc-title">Vegan Formula</div>
+    </div>
+
+    <!-- Hero card: Planet Hair Friendly — spans rows 1&2, col 2 -->
+    <div class="whyus-card hero-card reveal">
+      <div class="wc-icon">🤝</div>
+      <div class="wc-title">Planet<br>Hair Friendly</div>
+      <div class="wc-sub">Our commitment</div>
+    </div>
+
+    <!-- Row 1, Col 3: Cruelty Free -->
+    <div class="whyus-card dark reveal">
+      <div class="wc-icon">🐾</div>
+      <div class="wc-title">Cruelty Free</div>
+    </div>
+
+    <!-- Right column — spans rows 1&2, col 4 -->
+    <div class="whyus-right-col">
+      <!-- Refillable Bottle -->
+      <div class="whyus-card light reveal">
+        <div class="wc-title">Refillable Bottle</div>
+      </div>
+      <!-- 0% Plastic & Water -->
+      <div class="whyus-card stat reveal">
+        <div class="wc-stat-num">~0%</div>
+        <div class="wc-stat-label">Plastic<br>&amp; Water</div>
+      </div>
+      <!-- 100% Recyclable -->
+      <div class="whyus-card stat reveal">
+        <div class="wc-stat-num">~100%</div>
+        <div class="wc-stat-label">Recyclable</div>
+      </div>
+    </div>
+
+    <!-- Row 2, Col 1: Paraben Free -->
+    <div class="whyus-card light reveal">
+      <div class="wc-icon">🌱</div>
+      <div class="wc-title">Paraben Free</div>
+    </div>
+
+    <!-- Row 2, Col 3: Sulfate Free -->
+    <div class="whyus-card dark reveal">
+      <div class="wc-icon">🚫</div>
+      <div class="wc-title">Sulfate Free</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="about">
+  <div class="eyebrow reveal">01 - About H&#8322; Zéro</div>
+  <h2 class="reveal about-title">See it in action.</h2>
+  <div class="about-video-wrap reveal">
+    <video
+      id="aboutVideo"
+      class="about-video"
+      src="images/remove_the_shampoo_powder_at_t.mp4"
+      playsinline
+      muted
+      loop
+      preload="metadata"
+    ></video>
+    <div class="about-video-overlay" id="aboutOverlay">
+      <button class="about-play-btn" onclick="document.getElementById('aboutVideo').play(); document.getElementById('aboutOverlay').style.display='none';">
+        &#9654;
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="range">
+
+  <!-- header row -->
+  <div class="range-header">
+    <div class="eyebrow reveal">02 - The new range</div>
+    <h2 class="reveal">Find your formula - 30 seconds.</h2>
+  </div>
+
+  <!-- two-column layout -->
+  <div class="quiz-layout reveal">
+
+    <!-- ===== LEFT: question + options ===== -->
+    <div class="quiz-left">
+
+      <!-- progress bar -->
+      <div class="quiz-progress">
+        <div class="qp-dot active" id="qpd1"></div>
+        <div class="qp-dot" id="qpd2"></div>
+        <div class="qp-dot" id="qpd3"></div>
+      </div>
+
+      <!-- LEVEL 1 -->
+      <div class="quiz-level active" id="ql1">
+        <div class="quiz-step-label">Step 1 of 3 &nbsp;—&nbsp; The trigger</div>
+        <div class="quiz-q">What's the first thing you notice on a bad hair day?</div>
+        <div class="quiz-level-meme">POV: you did the onion oil thing and nothing happened 💀</div>
+        <div class="quiz-opts">
+          <button onclick="quizL1('root',this)">
+            <div class="opt-img"><img src="memes/1.gif" alt="Falling out - hair loss"></div>
+            <span class="opt-label">It's falling out more than usual</span>
+          </button>
+          <button onclick="quizL1('wave',this)">
+            <div class="opt-img"><img src="memes/2.gif" alt="Frizzy - unruly hair"></div>
+            <span class="opt-label">It won't sit still, no matter what I do</span>
+          </button>
+          <button onclick="quizL1('rebuild',this)">
+            <div class="opt-img"><img src="memes/3.jpg" alt="Damaged - rough hair"></div>
+            <span class="opt-label">Rough, damaged, like it's given up</span>
+          </button>
+          <button onclick="quizL1('glow',this)">
+            <div class="opt-img"><img src="memes/4.gif" alt="Dull - flat lifeless hair"></div>
+            <span class="opt-label">Just looks flat and lifeless</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- LEVEL 2 -->
+      <div class="quiz-level" id="ql2">
+        <div class="quiz-step-label">Step 2 of 3 &nbsp;—&nbsp; The cause</div>
+        <div class="quiz-q">What's actually causing it?</div>
+        <div class="quiz-level-meme" id="ql2meme">your shampoo is 80% water. plot twist: so is your problem ✨</div>
+        <div class="quiz-opts" id="ql2opts"></div>
+      </div>
+
+      <!-- LEVEL 3 -->
+      <div class="quiz-level" id="ql3">
+        <div class="quiz-step-label">Step 3 of 3 &nbsp;—&nbsp; The feel</div>
+        <div class="quiz-q">What do you want your hair to feel like after a wash?</div>
+        <div class="quiz-level-meme" id="ql3meme">the algorithm knows your hair type. now so do we 🧪</div>
+        <div class="quiz-opts" id="ql3opts"></div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="quiz-result" id="quizResult">
+        <div class="result-badge" id="resultBadge"></div>
+        <div class="quiz-level-meme" id="resultMeme" style="margin-bottom:16px;"></div>
+        <p id="resultText" style="font-size:15px; color:var(--offwhite); margin:0 0 10px; line-height:1.7; max-width:340px;"></p>
+        <p id="resultSecondary" style="display:none; font-size:11.5px; color:var(--gold-dim); font-family:'Space Mono'; letter-spacing:0.5px; line-height:1.7; margin-bottom:4px; max-width:340px;"></p>
+        <button class="quiz-restart" onclick="restartQuiz()">TAKE AGAIN</button>
+      </div>
+
+    </div><!-- /quiz-left -->
+
+    <!-- ===== RIGHT: 2x2 product image grid ===== -->
+    <div class="quiz-right">
+      <div class="quiz-right-grid">
+
+        <div class="qr-cell" id="qrc-root" data-key="root">
+          <img src="images/root_hold.png" alt="Root Hold">
+          <div class="qr-cell-label">Root Hold</div>
+        </div>
+
+        <div class="qr-cell" id="qrc-wave" data-key="wave">
+          <img src="images/calm_wave.png" alt="Calm Wave">
+          <div class="qr-cell-label">Calm Wave</div>
+        </div>
+
+        <div class="qr-cell" id="qrc-rebuild" data-key="rebuild">
+          <img src="images/rebuild.png" alt="Rebuild">
+          <div class="qr-cell-label">Rebuild</div>
+        </div>
+
+        <div class="qr-cell" id="qrc-glow" data-key="glow">
+          <img src="images/glass_glow.png" alt="Glass Glow">
+          <div class="qr-cell-label">Glass Glow</div>
+        </div>
+
+      </div>
+    </div><!-- /quiz-right -->
+
+  </div><!-- /quiz-layout -->
+
+</section>
+
+<section id="products">
+  <div class="eyebrow reveal">03 - Our Products</div>
+  <h2 class="reveal products-title">Water Activated. <span style="color:var(--gold)">Performance Elevated.</span></h2>
+  <div class="products-img-wrap reveal">
+    <img src="images/quiz_after.png" alt="H₂ Zéro — 4 product range: Root Hold, Calm Wave, Rebuild, Glass Glow" class="products-img">
+  </div>
+</section>
+
+<section id="insight">
+  <div class="eyebrow reveal">04 - Pricing</div>
+  <h2 class="reveal" style="font-size:clamp(26px,4.5vw,52px); max-width:760px; line-height:1.25;">Gen Z's values don't collapse at checkout - the price does.</h2>
+
+  <div class="gap-row">
+    <div class="gap-stat reveal"><div class="gap-num" data-target="66">0</div><div class="gap-label">say they want sustainable beauty</div></div>
+    <div class="arrow-down reveal">&rarr;</div>
+    <div class="gap-stat reveal"><div class="gap-num" data-target="18">0</div><div class="gap-label">actually purchase it</div></div>
+    <div class="arrow-down reveal">&rarr;</div>
+    <div class="gap-stat reveal"><div class="gap-num" data-target="11">0</div><div class="gap-label">come back to buy again</div></div>
+  </div>
+
+  <!-- Two pricing cards -->
+  <div class="pricing-row reveal">
+
+    <div class="price-card">
+      <div class="price-card-tag">FULL PACK</div>
+      <div class="price-card-price">&#8377;499</div>
+      <div class="price-card-sub">50g &nbsp;·&nbsp; ~50 washes</div>
+      <div class="price-card-per">~&#8377;10 per wash</div>
+      <ul class="price-card-list">
+        <li>Includes reusable dispenser jar</li>
+        <li>One-time packaging investment</li>
+        <li>Perfect for first-time buyers</li>
+      </ul>
+    </div>
+
+    <div class="price-card price-card--highlight">
+      <div class="price-card-tag">REFILL POUCH</div>
+      <div class="price-card-price">&#8377;379</div>
+      <div class="price-card-sub">50g &nbsp;·&nbsp; ~50 washes</div>
+      <div class="price-card-per">~&#8377;7.6 per wash</div>
+      <ul class="price-card-list">
+        <li>No jar needed — reuse your dispenser</li>
+        <li>~24% cheaper than a fresh pack</li>
+        <li>90% less packaging waste</li>
+      </ul>
+      <div class="price-card-badge">BEST VALUE</div>
+    </div>
+
+  </div>
+
+  <p class="cite reveal" style="margin-top:16px;">You pay once for the jar. Every wash after that gets cheaper - and cleaner.</p>
+
+</section>
+
+
+<section id="launch">
+  <div class="eyebrow reveal">05 - Launch communication</div>
+  <h2 class="reveal" style="font-size:clamp(26px,4vw,42px); max-width:700px;">Launch four weeks before the problem peaks</h2>
+
+  <div class="launch-wrapper reveal">
+
+    <!-- timeline row — spans full width -->
+    <div class="launch-timeline-row">
+      <div class="timeline">
+        <div class="tpoint hit"><div class="tdot"></div><h4>APRIL</h4></div>
+        <div class="tpoint hit"><div class="tdot"></div><h4>MAY</h4></div>
+        <div class="tpoint"><div class="tdot"></div><h4>MONSOON</h4></div>
+        <div class="tpoint"><div class="tdot"></div><h4>POST-MONSOON</h4></div>
+      </div>
+    </div>
+
+    <!-- channel boxes — same width, aligned under each dot -->
+    <div class="launch-channels-row">
+      <div class="ch-step">
+        <div class="ch-icon">&#128241;</div>
+        <div class="ch-label">D2C Quiz</div>
+      </div>
+      <div class="ch-arrow">&#8594;</div>
+      <div class="ch-step">
+        <div class="ch-icon">&#9889;</div>
+        <div class="ch-label">Quick Commerce</div>
+      </div>
+      <div class="ch-arrow">&#8594;</div>
+      <div class="ch-step">
+        <div class="ch-icon">&#128722;</div>
+        <div class="ch-label">Modern Trade</div>
+      </div>
+      <div class="ch-arrow">&#8594;</div>
+      <div class="ch-step">
+        <div class="ch-icon">&#9986;</div>
+        <div class="ch-label">Salons</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<section id="sales">
+  <div class="eyebrow reveal">06 - Sales strategy</div>
+  <h2 class="reveal" style="font-size:clamp(26px,4vw,42px);">Trial is the whole strategy</h2>
+
+  <div class="strategy-grid reveal">
+
+    <div class="strat-card">
+      <div class="strat-num">01</div>
+      <div class="strat-icon">🎙️</div>
+      <div class="strat-title">Niche Voices</div>
+      <div class="strat-desc">Micro-creators, real results, no paid praise</div>
+    </div>
+
+    <div class="strat-card">
+      <div class="strat-num">02</div>
+      <div class="strat-icon">🎓</div>
+      <div class="strat-title">Campus Diagnosis</div>
+      <div class="strat-desc">Live quiz + foam demo, run by specialists</div>
+    </div>
+
+    <div class="strat-card">
+      <div class="strat-num">03</div>
+      <div class="strat-icon">💬</div>
+      <div class="strat-title">Refill Ritual</div>
+      <div class="strat-desc">A WhatsApp check-in, not a sales pitch</div>
+    </div>
+
+    <div class="strat-card">
+      <div class="strat-num">04</div>
+      <div class="strat-icon">💧</div>
+      <div class="strat-title">Litre Counter</div>
+      <div class="strat-desc">Water saved, visible and growing</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="business">
+  <div class="eyebrow reveal">07 - The business case</div>
+  <h2 class="reveal" style="font-size:clamp(26px,4vw,42px); max-width:700px; margin:0 auto 10px;">Sustainability that pays for itself</h2>
+  <div class="biz-row">
+    <div class="reveal"><div class="biz-num" data-target="24000" data-suffix="">0</div><div class="biz-label">TRIALS, PHASE ONE</div></div>
+    <div class="reveal"><div class="biz-num" data-target="1.42" data-suffix="">0</div><div class="biz-label">TONNES OF PLASTIC NEVER MADE</div></div>
+    <div class="reveal"><div class="biz-num" data-target="84" data-suffix="%">0</div><div class="biz-label">% LOWER SHIPPING WEIGHT</div></div>
+  </div>
+  <div class="math reveal">
+    <div>No water &rarr; no transport weight for water</div>
+    <div>No bottle &rarr; no plastic mould, no tooling cost</div>
+    <div>No water &rarr; no preservative system required</div>
+    <div class="tot">= lower COGS per unit than a liquid bottle, even at &#8377;10/wash</div>
+  </div>
+</section>
+
+<section id="close">
+  <h2 class="reveal">Every other sustainable brand asks Gen Z to pay more for their values.<br>We're making it the same price as not caring at all.</h2>
+  <div class="hashtag reveal">#MERAMIXMERAHAIR &nbsp;&middot;&nbsp; L'ORÉAL H&#8322; ZÉRO</div>
+  <div class="reveal" style="margin-top:56px; font-family:'Cormorant Garamond',serif; font-size:clamp(32px,5vw,58px); font-weight:300; color:var(--white); letter-spacing:4px;">
+    Thank You
+  </div>
+  <div class="reveal" style="margin-top:12px; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:3px; color:var(--gold-dim); text-transform:uppercase;">
+    L'Oréal H&#8322; Zéro &nbsp;-&nbsp; Sar Se Shuru
+  </div>
+</section>
+
+<script>
+var sections=Array.prototype.slice.call(document.querySelectorAll('section'));
+var dots=document.querySelectorAll('.dots a');
+var prevBtn=document.getElementById('prevBtn');
+var nextBtn=document.getElementById('nextBtn');
+var counterEl=document.getElementById('slideCounter');
+var current=0;
+
+function pad(n){return n<10?'0'+n:''+n;}
+
+function animateCounters(section){
+  section.querySelectorAll('.gap-num,.biz-num').forEach(function(el){
+    if(!el.dataset.done){
+      el.dataset.done='1';
+      var target=parseFloat(el.dataset.target);
+      var isDecimal=(target % 1 !== 0);
+      var suffix=el.classList.contains('gap-num') ? '%' : (el.dataset.suffix || '');
+      var cur=0;
+      var steps=30;
+      var step=target/steps;
+      var t=setInterval(function(){
+        cur+=step;
+        if(cur>=target){cur=target; clearInterval(t);}
+        el.textContent=(isDecimal ? cur.toFixed(2) : Math.round(cur))+suffix;
+      },30);
+    }
+  });
+}
+
+function animateEntries(section){
+  var items=section.querySelectorAll('.reveal,.bubble,.meme');
+  items.forEach(function(el,i){
+    if(!el.classList.contains('done')){
+      el.classList.add('done');
+      (function(el,delay){
+        setTimeout(function(){el.classList.add('in');},delay);
+      })(el,i*70);
+    }
+  });
+}
+
+function goToSlide(i){
+  if(i<0) i=0;
+  if(i>sections.length-1) i=sections.length-1;
+  sections[current].classList.remove('active');
+
+  // pause video if leaving about slide
+  var vid = document.getElementById('aboutVideo');
+  if(vid) vid.pause();
+
+  current=i;
+  var section=sections[current];
+  section.classList.add('active');
+  section.scrollTop=0;
+  animateEntries(section);
+  animateCounters(section);
+  dots.forEach(function(d,idx){d.classList.toggle('active',idx===current);});
+  prevBtn.disabled=(current===0);
+  nextBtn.disabled=(current===sections.length-1);
+  counterEl.textContent=pad(current+1)+' / '+pad(sections.length);
+
+  // autoplay video when about slide becomes active
+  if(section.id==='about' && vid){
+    var overlay = document.getElementById('aboutOverlay');
+    vid.play().then(function(){
+      if(overlay) overlay.style.display='none';
+    }).catch(function(){
+      if(overlay) overlay.style.display='flex';
+    });
+  }
+}
+
+prevBtn.addEventListener('click',function(){goToSlide(current-1);});
+nextBtn.addEventListener('click',function(){goToSlide(current+1);});
+dots.forEach(function(d,i){
+  d.addEventListener('click',function(e){
+    e.preventDefault();
+    goToSlide(i);
+  });
+});
+window.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='PageDown'){goToSlide(current+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){goToSlide(current-1);}
+});
+
+var touchStartX=null;
+document.addEventListener('touchstart',function(e){touchStartX=e.changedTouches[0].clientX;});
+document.addEventListener('touchend',function(e){
+  if(touchStartX===null) return;
+  var dx=e.changedTouches[0].clientX-touchStartX;
+  if(Math.abs(dx)>50){ dx<0 ? goToSlide(current+1) : goToSlide(current-1); }
+  touchStartX=null;
+});
+
+window.addEventListener('load',function(){
+  goToSlide(0);
+  initParticles();
+});
+
+/* ===== HERO GOLD PARTICLES ===== */
+function initParticles(){
+  var canvas = document.getElementById('heroCanvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W, H, particles = [];
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var COLORS = ['rgba(201,168,76,', 'rgba(232,201,106,', 'rgba(255,235,160,'];
+
+  function Particle(){
+    this.reset();
+  }
+  Particle.prototype.reset = function(){
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 1.4 + 0.3;
+    this.alpha = Math.random() * 0.6 + 0.1;
+    this.speed = Math.random() * 0.3 + 0.05;
+    this.dx = (Math.random() - 0.5) * 0.3;
+    this.dy = -(Math.random() * 0.4 + 0.1);
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.life = 0;
+    this.maxLife = Math.random() * 200 + 100;
+  };
+  Particle.prototype.update = function(){
+    this.x += this.dx;
+    this.y += this.dy;
+    this.life++;
+    if(this.life > this.maxLife || this.y < -10) this.reset();
+  };
+  Particle.prototype.draw = function(){
+    var fade = this.life < 30 ? this.life/30 : this.life > this.maxLife-30 ? (this.maxLife-this.life)/30 : 1;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fillStyle = this.color + (this.alpha * fade) + ')';
+    ctx.fill();
+  };
+
+  for(var i = 0; i < 90; i++){
+    var p = new Particle();
+    p.life = Math.random() * p.maxLife; // stagger starts
+    particles.push(p);
+  }
+
+  function frame(){
+    ctx.clearRect(0, 0, W, H);
+    for(var i = 0; i < particles.length; i++){
+      particles[i].update();
+      particles[i].draw();
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ===== 3-LEVEL QUIZ ===== */
+
+/*
+  Letter mapping (A=root, B=wave, C=rebuild, D=glow)
+  Level 1 — Trigger (broad emotional entry point)
+  Level 2 — Root cause (narrows within the lean)
+  Level 3 — Preference (confirms the match)
+
+  Scoring — majority rule across 3 answers:
+    3/3 same     → clean, confident result
+    2/3 same     → winner shown, secondary note surfaced
+    all different → Level 1 answer wins (tie-break), shown as "closest match"
+*/
+
+var KEYS = ['root','wave','rebuild','glow']; // A B C D
+
+// L2: one option per letter, always in A-B-C-D order
+var L2_OPTS = [
+  'Stress, diet, or genetics',       // A → root
+  'Humidity, hard water, or weather',// B → wave
+  'Heat styling, colour, or chemical treatments', // C → rebuild
+  'Product buildup or just... time'  // D → glow
+];
+
+// L3: one option per letter, always in A-B-C-D order
+var L3_OPTS = [
+  'Stronger, like it\'s actually holding on', // A → root
+  'Calm and manageable, not fighting me',      // B → wave
+  'Repaired, like the damage didn\'t happen',  // C → rebuild
+  'Glossy, like it\'s catching light'          // D → glow
+];
+
+var PRODUCT = {
+  root:    {
+    name: 'Root Hold',
+    color: '#1c1608',
+    line:  'Weak roots, strong hair. Shikakai, rosemary and biotin, engineered to hold from the base.'
+  },
+  wave:    {
+    name: 'Calm Wave',
+    color: '#181410',
+    line:  'Control every strand. Argan, coconut milk and amla, built to tame humidity.'
+  },
+  rebuild: {
+    name: 'Rebuild',
+    color: '#141416',
+    line:  'Repair every bond. Keratin and bond-repair complex for colour or heat damage.'
+  },
+  glow:    {
+    name: 'Glass Glow',
+    color: '#1a1510',
+    line:  'Reflect every light. Rice water, hibiscus and gloss complex for mirror-level shine.'
+  }
+};
+
+// Picks [L1, L2, L3] — set as quiz progresses
+var picks = [null, null, null];
+
+/* ---------- helpers ---------- */
+
+function setProgress(step) {
+  // step 1/2/3 = current active; all prior = done
+  for (var i = 1; i <= 3; i++) {
+    var dot = document.getElementById('qpd' + i);
+    dot.classList.remove('done', 'active');
+    if (i < step)       dot.classList.add('done');
+    else if (i === step) dot.classList.add('active');
+  }
+}
+
+function allDone() {
+  for (var i = 1; i <= 3; i++) {
+    document.getElementById('qpd' + i).classList.remove('active');
+    document.getElementById('qpd' + i).classList.add('done');
+  }
+}
+
+function hideAllLevels() {
+  ['ql1','ql2','ql3'].forEach(function(id) {
+    var el = document.getElementById(id);
+    el.classList.remove('active', 'enter');
+    el.style.display = 'none';
+  });
+  var res = document.getElementById('quizResult');
+  res.classList.remove('show');
+  res.style.display = 'none';
+}
+
+function revealLevel(id) {
+  hideAllLevels();
+  var el = document.getElementById(id);
+  el.style.display = 'block';
+  void el.offsetWidth; // force reflow so animation fires
+  el.classList.add('active', 'enter');
+}
+
+function flashThenDo(btn, fn) {
+  // highlight chosen button, lock the whole grid, then call fn after brief pause
+  btn.classList.add('selected');
+  btn.parentElement.querySelectorAll('button').forEach(function(b) {
+    b.disabled = true;
+  });
+  setTimeout(fn, 380);
+}
+
+function buildGrid(containerId, options, onPick, gifStart) {
+  var c = document.getElementById(containerId);
+  c.innerHTML = '';
+  // files that are PNG instead of GIF
+  var pngFiles = {6: true, 8: true, 12: true};
+  options.forEach(function(text, i) {
+    var btn = document.createElement('button');
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'opt-img';
+    var img = document.createElement('img');
+    img.alt = text;
+    if (gifStart) {
+      var fileNum = gifStart + i;
+      var ext = pngFiles[fileNum] ? '.png' : '.gif';
+      img.src = 'memes/' + fileNum + ext;
+    }
+    imgDiv.appendChild(img);
+    var label = document.createElement('span');
+    label.className = 'opt-label';
+    label.textContent = text;
+    btn.appendChild(imgDiv);
+    btn.appendChild(label);
+    (function(idx, b) {
+      b.onclick = function() { onPick(idx, b); };
+    })(i, btn);
+    c.appendChild(btn);
+  });
+}
+
+/* ---------- right panel update ---------- */
+
+var PRODUCT_NAMES = {
+  root: 'ROOT HOLD',
+  wave: 'CALM WAVE',
+  rebuild: 'REBUILD',
+  glow: 'GLASS GLOW'
+};
+
+function updateRightPanel(key) {
+  // highlight the matching cell in the 2x2 grid
+  document.querySelectorAll('.qr-cell').forEach(function(c) {
+    c.classList.toggle('hi', c.dataset.key === key);
+  });
+}
+
+function resetRightPanel() {
+  document.querySelectorAll('.qr-cell').forEach(function(c) { c.classList.remove('hi'); });
+}
+
+/* ---------- scoring ---------- */
+
+function scoreAndShow() {
+  var a = picks[0], b = picks[1], c = picks[2];
+
+  // count frequency
+  var freq = {};
+  [a, b, c].forEach(function(k) { freq[k] = (freq[k] || 0) + 1; });
+
+  var winner = null;
+  var maxCount = 0;
+  for (var k in freq) {
+    if (freq[k] > maxCount) { maxCount = freq[k]; winner = k; }
+  }
+
+  var certainty, secondaryKey = null;
+
+  if (maxCount === 3) {
+    // clean 3/3
+    certainty = 'certain';
+  } else if (maxCount === 2) {
+    // 2/3 — find the odd one out
+    certainty = 'strong';
+    for (var k2 in freq) {
+      if (k2 !== winner) { secondaryKey = k2; break; }
+    }
+  } else {
+    // all three different — tie-break to Level 1 answer
+    winner = a;
+    certainty = 'tiebreak';
+  }
+
+  showResult(winner, certainty, secondaryKey);
+}
+
+/* ---------- result display ---------- */
+
+function showResult(key, certainty, secondaryKey) {
+  var data = PRODUCT[key];
+
+  var badge = document.getElementById('resultBadge');
+  badge.textContent = data.name.toUpperCase();
+  badge.style.background = data.color;
+  badge.style.color = '#e8c96a';
+  badge.style.borderColor = 'rgba(201,168,76,0.5)';
+
+  var prefix = '';
+  if (certainty === 'certain')  prefix = 'You\'re a ' + data.name + ' person, no contest. ';
+  else if (certainty === 'tiebreak') prefix = 'Closest match: ';
+
+  document.getElementById('resultText').textContent = prefix + data.line;
+
+  // result meme — per product
+  var memes = {
+    root:    'your hair said "i quit" before you did 🪴',
+    wave:    'humidity ate your blowout and left no crumbs 🌊',
+    rebuild: 'heat damage found, treatment assigned 🔬',
+    glow:    'main character hair is literally one wash away ✨'
+  };
+  document.getElementById('resultMeme').textContent = memes[key] || '';
+
+  // secondary note for 2/3 match
+  var secEl = document.getElementById('resultSecondary');
+  if (secondaryKey && PRODUCT[secondaryKey]) {
+    var secName = PRODUCT[secondaryKey].name;
+    var secNote = '';
+    if (secondaryKey === 'rebuild') secNote = 'worth keeping in mind if you colour or heat-style often.';
+    else if (secondaryKey === 'root') secNote = 'worth watching if you\'ve noticed extra shedding lately.';
+    else if (secondaryKey === 'wave') secNote = 'useful to know if humidity hits hard in monsoon season.';
+    else if (secondaryKey === 'glow') secNote = 'something to reach for when you want that mirror finish.';
+    secEl.textContent = secName + ' isn\'t far behind — ' + secNote;
+    secEl.style.display = 'block';
+  } else {
+    secEl.style.display = 'none';
+  }
+
+  allDone();
+  hideAllLevels();
+
+  var res = document.getElementById('quizResult');
+  res.style.display = 'flex';
+  void res.offsetWidth;
+  res.classList.add('show');
+
+  // highlight right panel with final answer
+  updateRightPanel(key);
+}
+
+/* ---------- level handlers ---------- */
+
+function quizL1(key, btn) {
+  picks[0] = key;
+  flashThenDo(btn, function() {
+    buildGrid('ql2opts', L2_OPTS, function(idx, b2) {
+      picks[1] = KEYS[idx];
+      flashThenDo(b2, function() {
+        buildGrid('ql3opts', L3_OPTS, function(idx2, b3) {
+          picks[2] = KEYS[idx2];
+          flashThenDo(b3, function() {
+            scoreAndShow();
+          });
+        }, 9);
+        setProgress(3);
+        revealLevel('ql3');
+      });
+    }, 5);
+    setProgress(2);
+    revealLevel('ql2');
+  });
+}
+
+/* ---------- restart ---------- */
+
+function restartQuiz() {
+  picks = [null, null, null];
+  document.querySelectorAll('#ql1 .quiz-opts button').forEach(function(b) {
+    b.disabled = false;
+    b.classList.remove('selected');
+  });
+  resetRightPanel();
+  setProgress(1);
+  revealLevel('ql1');
+}
+
+</script>
+</body>
+</html>
